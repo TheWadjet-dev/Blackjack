@@ -1,5 +1,5 @@
 # Stage 1: Build the Go application
-FROM golang:1.20 as builder
+FROM golang:1.20 AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy the Go application code
 COPY main.go .
 
-# Build the application
-RUN go build -o blackjack main.go
+# Build the application with CGO disabled for compatibility with Alpine
+RUN CGO_ENABLED=0 GOOS=linux go build -o blackjack main.go
 
 # Stage 2: Create a lightweight image to run the application
 FROM alpine:latest
